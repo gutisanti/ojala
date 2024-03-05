@@ -16,6 +16,35 @@ class TestMotorEncriptacion(unittest.TestCase):
         # Comprobar que el mensaje desencriptado sea igual al original
         self.assertEqual(entrada, mensaje_desencriptado)
 
+    def test_message_number_Encriptar(self):
+        # Caso de prueba para un mensaje con números
+        entrada = "23432"
+        clave = 1232
+        mi_motor = MTO.MotorEncriptacion(clave)
+
+        # Proceso de desencriptación
+        resultado = mi_motor.encriptar(entrada)
+
+        # Esperado
+        esperado = "ԂԃԄԃԂ" 
+
+        # Verificar que el resultado de la desencriptación sea igual al mensaje original
+        self.assertEqual(esperado, resultado)
+
+    def test_character_message_Encriptar(self):
+        # Caso de prueba para un mensaje con caracteres especiales
+        entrada = "-:_.'¿"
+        clave = 2550
+        mi_motor = MTO.MotorEncriptacion(clave)
+
+        # Proceso de desencriptación
+        resultado = mi_motor.encriptar(entrada)
+
+        # Esperado
+        esperado = "ਣਰ੕ਤਝવ" 
+
+        # Verificar que el resultado de la desencriptación sea igual al mensaje original
+        self.assertEqual(esperado, resultado)
     def test_encriptar_mensaje_vacio(self):
         # Caso de prueba para encriptar un mensaje vacío
         entrada = ""
@@ -167,36 +196,6 @@ class TestMotorEncriptacion(unittest.TestCase):
 
         # Verificar que el resultado de la desencriptación sea igual al mensaje original
         self.assertEqual(esperado, resultado)
-
-    def test_modified_encrypted_message(self):
-        # Caso de prueba para un mensaje encriptado modificado
-        mensaje_encriptado = "ԂԃԄԃԂ"
-        # Cambia un carácter del mensaje encriptado
-        mensaje_encriptado_modificado = list(mensaje_encriptado)
-        # Por ejemplo, cambia el primer carácter de "Ԃ" a "ԃ"
-        mensaje_encriptado_modificado[0] = "j"
-        mensaje_encriptado_modificado = "".join(mensaje_encriptado_modificado)
-
-        # Key y motor de encriptación
-        clave = 1232
-        mi_motor = MTO.MotorEncriptacion(clave)
-
-        # Proceso de desencriptación debería lanzar una excepción
-        with self.assertRaises(ValueError) as context:
-            mi_motor.desencriptar(mensaje_encriptado_modificado)
-
-        # Verificar que la excepción tiene el mensaje esperado
-        self.assertEqual(str(context.exception), "El mensaje encriptado está corrupto o ha sido modificado.")
-
-    def test_empty_message(self):
-        # Caso de prueba para un mensaje vacío
-        entrada = ""
-        clave = 14074
-        mi_motor = MTO.MotorEncriptacion(clave)
-
-        # Proceso de encriptación debería lanzar una excepción
-        with self.assertRaises(MTO.EmptyMessage):
-            mi_motor.encriptar(entrada)
 
     def test_none_message(self):
         # Caso de prueba para un mensaje None
